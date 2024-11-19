@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns:sonar="antlib:org.sonar.ant" name="Deploy" default="DeployAutomate" basedir=".">
+   <property name="sonar.host.url" value="http://10.100.20.192:9000/" />
+   <property file="build.properties" />
+   <path id="Liferay_jar_path">
+      <fileset dir="${Liferay_lib}">
+         <include name="**/*.jar" />
+      </fileset>
+   </path>
+   <path id="warFilePath">
+      <fileset dir="${basedir}">
+         <include name="**/*.war" />
+      </fileset>
+   </path>
+   <path id="sonar_jar_path">
+      <fileset dir="${Liferay_lib}\..\..">
+         <include name="**/*.jar" />
+      </fileset>
+   </path>
+   <target name="clean">
+      <delete>
+         <fileset dir="${basedir}">
+            <include name="**/*.war" />
+         </fileset>
+      </delete>
+      <delete dir=".sonar" />
+      <echo>clean Success</echo>
+   </target>
+   
+   <!--target name="XeragoAutomate" depends="deployroot_dev,sonar" /-->
+   <!-- Define the SonarQube project properties -->
+   <target name="sonar_test">
+    <property name="sonar.projectKey" value="Investigo-Test" />
+   <property name="sonar.projectName" value="Investigo-Test" />
+   <property name="sonar.projectVersion" value="2.0" />
+   <property name="sonar.sources" value="/var/lib/jenkins/workspace/Investigo-Test/" />
+   <property name="sonar.java.binaries" value="/var/lib/jenkins/workspace/Investigo-Test/" />
+  <property name="sonar.java.libraries" value="/var/lib/jenkins/tools/hudson.tasks.Ant_AntInstallation/ANT_1.9/lib/sonarqube-ant-task-2.7.1.1951.jar" />
+   <property name="sonar.scm.disabled" value="true" />
+   <property name="sonar.login" value="admin" />
+   <property name="sonar.password" value="Xerago@123" />
+      <taskdef uri="antlib:org.sonar.ant" resource="org/sonar/ant/antlib.xml">
+     <!--      Update the following line, or put the "sonarqube-ant-task-*.jar" file in your "$HOME/.ant/lib" folder -->
+          <classpath path="path/to/sonar/ant/task/lib/sonarqube-ant-task-*.jar" />
+      </taskdef>
+       <!-- Execute SonarQube Scanner for Ant Analysis  -->
+      <sonar:sonar />
+   </target>
+
+
+   <!-- Define SonarQube Scanner for Ant Target -->
+   <!-- Define SonarQube Scanner for Ant Target -->
+   <!-- Dev start -->
+   <target name="dev-start" depends="dev-check-port">
+      <sshexec host="10.100.21.160" trust="true" username="${dev_server_username}" password="${dev_server_password}" port="8429" command="bash /home/jenkinsuser/Investigo/run.sh" />
+      <echo>Increamental deployment successfully completed</echo>
+   </target>
+
+   <target name="test-start" depends="dev-check-port">
+      <sshexec host="10.100.20.181" trust="true" username="${test_server_username}" password="${test_server_password}" port="8429" command="bash /home/jenkinsuser/Contentigo/run.sh" />
+      <echo>Increamental deployment successfully completed</echo>
+   </target>
+
+      <target name="dev-check-port" description="Check whether Tomcat is running">
+      <echo message="Checking service is running" />
+      <condition property="dev.running">
+         <socket server="10.100.20.172" port="8429" />
+      </condition>
+   </target>
+   <!-- Dev end -->
+
+   <!-- TEST -->
+
+
+</project>
+
