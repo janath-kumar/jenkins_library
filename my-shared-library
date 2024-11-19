@@ -1,0 +1,14 @@
+vars 
+| --- mails.groovy
+| --- maven.groovy
+| --- maventest.groovy
+| --- sonar.groovy
+| --- qg.groovy
+| --- gradle.groovy
+| --- gradletest.groovy
+| --- jar_deploy
+| --- py_deploy
+| --- campaign_deploy
+| --- javacompilation
+| --- git_checkout
+| --- deploy_art
